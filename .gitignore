@@ -1,2 +1,3 @@
 # Don't track checkpoints
 .ipynb_checkpoints
+*/.ipynb_checkpoints/*
