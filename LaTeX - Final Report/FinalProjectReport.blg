@@ -1,16 +1,13 @@
-This is BibTeX, Version 0.99d
+This is BibTeX, Version 0.99d (TeX Live 2019/Debian)
 Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: FinalProjectReport.aux
-Reallocating 'name_of_file' (item size: 1) to 9 items.
 The style file: IEEEtran.bst
-Reallocating 'name_of_file' (item size: 1) to 22 items.
-Reallocating 'singl_function' (item size: 4) to 100 items.
-Reallocating 'singl_function' (item size: 4) to 100 items.
-Reallocating 'singl_function' (item size: 4) to 100 items.
-Reallocating 'wiz_functions' (item size: 4) to 6000 items.
-Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
 Database file #1: References/references.bib
-Warning--I didn't find a database entry for "hudgins1993"
 -- IEEEtran.bst version 1.13 (2008/09/30) by Michael Shell.
 -- http://www.michaelshell.org/tex/ieeetran/bibtex/
 -- See the "IEEEtran_bst_HOWTO.pdf" manual for usage information.
@@ -19,7 +16,7 @@ Warning--I didn't find a database entry for "hudgins1993"
 Done.
 You've used 16 entries,
             4039 wiz_defined-function locations,
-            913 strings with 10811 characters,
+            912 strings with 10800 characters,
 and the built_in function-call counts, 12004 in all, are:
 = -- 943
 > -- 252
@@ -58,4 +55,3 @@ warning$ -- 0
 while$ -- 63
 width$ -- 17
 write$ -- 163
-(There was 1 warning)

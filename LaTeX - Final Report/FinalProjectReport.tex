@@ -106,8 +106,10 @@ Physical therapy is considered to be one of the most important aspects of CP tre
 
 One of the difficulties of regular physical therapy is introducing enough novelty in the sessions to keep children engaged in their therapy. Electromyography (EMG) is being increasingly used to classify gestures and motions. As a result, it offers a promising solution to recognize human movement and create a gamified environment for patients to simulate rehabilitation exercises. EMG is a non-invasive technique that can quantify muscle electrical activity using sensors placed on the surface of the skin. EMG data can be combined with a machine learning model in order to classify human movement. Software can then be developed around this model to offer interactive exercise instruction to the patient. One potential application includes video games where the rehabilitation exercises can control outcome in the game.
 
-The primary objective of this report will be to classify a subset of various hand gestures. Techniques such as Support Vector Machines (SVM), Feed-Forward Neural Networks (FFNN) and Long-Short Term Memory (LSTM) Neural Networks will be used for classification and the results of the models will be compared for accuracy. The content of this report is organized as follows: \Cref{sec:intro} is this current introduction. 
+The primary objective of this report will be to classify a subset of various hand gestures. Techniques such as Support Vector Machines (SVM), Feed-Forward Neural Networks (FFNN) and Long-Short Term Memory (LSTM) Neural Networks will be used for classification and the results of the models will be compared for accuracy. The content of this report is organized as follows: \Cref{sec:intro} is this current introduction. \Cref{sec:back} presents a description of the three classification methods used in this project along with a review of the previous contributions made in EMG gesture classification. \Cref{sec:mat_met} presents the traditional data preparation approach, hyperparameter tuning, and implementation details for the SVM and FFNN models. \Cref{sec:nov_met} presents the novel data preparation approach, hyperparameter tuning, and implementation details for the LSTM network. \Cref{sec:results} presents and compares the results of the three classification methods, and \Cref{sec:conclusion} summarizes the results of the project and extracts key implications.
 
+\label{sec:back}
+\label{sec:mat_met}
 
 \section{Background and Related Work}
 \label{sec:back}
@@ -148,7 +150,7 @@ The dataset consisted of muscle activity readings for 8 sensors which measured t
 	\label{fig:emg_overlap}
 \end{figure}
 
-For the neural networks, the gestures were encoded in one-hot format such that a softmax activation function could be used for the output layer. The SVM left the target classes in their numerical form 0 through 3. The data was randomly split 60/20/20 into training, validation, and testing data. The networks were tuned using the validation and testing data, and then after the network parameters were finalized, it was tested with the test data for comparison amongst the three types of networks created. 
+For the neural networks, the gestures were encoded in one-hot format such that a softmax activation function could be used for the output layer. The SVM left the target classes in their numerical form 0 through 3. The data was randomly split 60/20/20 into training, validation, and testing data. The networks were tuned using the training and validation data, and then after the network parameters were finalized, it was tested with the test data for comparison amongst the three types of networks created. 
 
 \subsection{Feature Extraction}
 After the data is windowed, several features are computed for each windowed section to increase the total number of attributes and obtain additional information from the EMG data. There are many options for the time-domain features that can be obtained, but the four most popular options were selected. Each feature is computed for each of the 8 data sensors, resulting in a total of 56 attributes.
@@ -186,7 +188,7 @@ f(x,y)=\begin{cases}
 \end{equation}
 
 \paragraph{Auto-Regressive Coefficients (AR)}
-Each channel is represented by a $4^{th}$ order AR model and the features are the coefficients for the model. The coefficients can be computed using \cref{eqn:ar}, where $P$ is the AR order, $ap$ are the AR coefficients, and $w_i$ is a white noise term.
+Each channel is represented by a $4^{th}$ order AR model and the features are the coefficients for the model. The coefficients can be computed using \cref{eqn:ar}, where $P$ is the AR order, $a_p$ are the AR coefficients, and $w_i$ is a white noise term.
 \begin{equation}
  x_i = \sum_{p=1}^{P}a_px_{i-p}+w_i.
 \label{eqn:ar}
@@ -248,6 +250,7 @@ After the network structure was settled, the learning rate, learning function, a
 \endgroup
 
 \section{Methodology - Novel (LSTM)}
+\label{sec:nov_met}
 \subsection{Data Preparation}
 EMG data from each gesture was divided into sliding windows of 200 ms and 50 ms overlap. Then, each window was stacked on top of each other horizontally to form a 3D array that was going to be used to train the LSTM network. Each row of the 3D array represented a training sample, whereas each column represented the EMG reading of one of the eight channels/sensors of the Myo Armband. The third dimension of the 3D array represented the lag values of each EMG sensor/channel. After creating a 3D array for each gesture, the rows of this 3D array were randomly shuffled and then were divided into the training set, the cross-validation set, and the testing set, each one having 60\%, 20\%, and 20\%, respectively, of the whole gesture dataset. This procedure was repeated for each of the remaining gesture datasets. Having divided the data into the three sets, the data labels were separated and then, one-hot encoding was used on the data labels in order for them to be classified using a softmax activation function. 
 
@@ -276,6 +279,7 @@ LSTM networks have been widely used in sequence problems where there exists a ti
 A baseline LSTM model was instantiated with the parameters \{‘\# Hidden layers’: 1,  ‘\# Neurons per layer’: 100, ‘Activation function’: ReLU, ‘Dropout rate’: 20\%\} which was then fit on the training data. Hold out cross validation was used to obtain a baseline train score. During tuning, RandomSearch randomly sampled a set of parameters from the available parameters and returned the model yielding the lowest hold out validation score. The selected model was then evaluated on the test set for final results.
 
 \section{Results}
+\label{sec:results}
 \subsection{Evaluation Metrics}
 Three metrics were used to evaluate the performance of our models: accuracy, precision and recall. Accuracy was the most important metric since it represents the proportion of true results among the total number of cases examined. Precision was used to examine the proportion of predicted gestures that were actually correct, for each class. Recall was used to evaluate the proportion of actual gestures that were correctly identified by the models. The equations for how we calculated these metrics are given below.
 
@@ -370,7 +374,7 @@ Upon investigating which network architecture performed best, the 2-layer networ
 \end{figure}
 
 \subsection{LSTM Results}
-After reviewing the results from the RandomSearch hyperparameter tuning process, we found that networks with 3 to 4 hidden layers were consistently preferred, although one shallow network with a single hidden layer performed substantially well. We observed no strong preference for the number of neurons per hidden layer, though it’s worth noting that the highest scoring models tended to have a couple dense layers of 100+ neurons. We also found that having too harsh of a dropout policy negatively affected the models performance. Results show that a dropout rate of 18\%-24\% generated the highest validation scores, with scores dipping drastically after the 27\% mark. Finally, we found that the ELU activation function consistently outperformed the ReLU function and was the activation function of choice for the first 8 out of 10 top models returned by RandomSearch. The best performing models and their hyperparameters are summarized in \Cref{table:lstm_tun}. The scores reported are their validation scores. Network 1 was evaluated on the test set and scored a test accuracy of 99.36\%. \cref{fig:lstm_a_l} shows the training accuracy and loss graphs for Network 1, which was selected from RandomSearch. \cref{fig:lstm_cm} shows the confusion matrix for Network 1 on the test set, , while \cref{fig:lstm_pr} shows the corresponding precision and recall values for each gesture. 
+After reviewing the results from the RandomSearch hyperparameter tuning process, we found that networks with 3 to 4 hidden layers were consistently preferred, although one shallow network with a single hidden layer performed substantially well. We observed no strong preference for the number of neurons per hidden layer, though it’s worth noting that the highest scoring models tended to have a couple dense layers of 100+ neurons. We also found that having too harsh of a dropout policy negatively affected the models performance. Results show that a dropout rate of 18\%-24\% generated the highest validation scores, with scores dipping drastically after the 27\% mark. Finally, we found that the ELU activation function consistently outperformed the ReLU function and was the activation function of choice for the first 8 out of 10 top models returned by RandomSearch. The best performing models and their hyperparameters are summarized in \Cref{table:lstm_tun}. The scores reported are their validation scores. Network 1 was evaluated on the test set and scored a test accuracy of 99.36\%. \cref{fig:lstm_a_l} shows the training accuracy and loss graphs for Network 1, which was selected from RandomSearch. \cref{fig:lstm_cm} shows the confusion matrix for Network 1 on the test set, while \cref{fig:lstm_pr} shows the corresponding precision and recall values for each gesture. 
 
 \begingroup
 \def\arraystretch{1.2}% row spacing
@@ -458,6 +462,8 @@ After reviewing the results from the RandomSearch hyperparameter tuning process,
 \subsection{Model Comparison}
 \Cref{table:final_comp} summarizes the test accuracy for the three methods. It is clear that all three methods are very successful. Based on the tuning that was performed, the SVM and LSTM networks performed better than the FFNN. While care was taken to tune each network approximately the same amount, it is possible that with further tuning the FFNN could achieve the accuracy obtained by the other two methods. From observing the precision and recall tables, it can be seen that each architecture had issues with different gestures. The novel LSTM neural network mis-identified gesture 2 more than others. It had no issues with gestures 0 or 3. Conversely, the SVM and FFNN had more issues with gesture 3 than the others. This difference could be due to the feature extraction that was performed for the FFNN and the SVM. It is fortunate to know that the LSTM network, once trained, performs comparably to the standard methods. This is advantageous for real-time systems (such as video games for rehabilitation), as they would not have to take the time or computational power to compute all the features while the system is running, which could lead to faster response times.
 
+\section{Conclusion}
+\label{sec:conclusion}
 
 
 
