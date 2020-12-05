@@ -42,7 +42,7 @@ ytest = data.matrix(ytest)
 ########################################
 # TUNING THE NETWORK STRUCTURE
 ########################################
-numEpoch = 30
+numEpoch = 120
 
 # Total number of layers: 2
 # Neurons structure: 56-4
@@ -316,7 +316,7 @@ history <- soft_4_56_112 %>% fit(
 learn_fn = c("sgd","adam")
 learn_rate = c(0.001,0.01,0.05,0.1,0.2,0.3,0.4) #7 options
 act_fn = c("relu","elu","sigmoid") #3 options
-numEpoch = 30
+numEpoch = 120
 
 # Results matrix
 tuning_2 <- array(data = NA, dim = c(2,length(learn_rate),length(act_fn)))
