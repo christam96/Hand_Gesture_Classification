@@ -75,7 +75,8 @@ for gest in np.arange(0, 4):
     y_tst = np.append(y_tst, y[:tst_X.shape[0]])
 
 
-# Reshape data and reshuffle it
+# Reshape data and reshuffle it so that the next input to the 
+# network is not from the same gesture
 # Training data
 aux = np.arange(y_train.shape[0])
 np.random.shuffle(aux)
