@@ -44,6 +44,8 @@ for gest in np.arange(0, 4):
 
     #################################################
     # Create txt files with the index order for splitting the data
+    # We do this to shuffle the order of the windows, not the data
+    # within the windows, as we need these data to be sequential
     # Not to be used again
     #################################################
     # a = np.arange(numwin)
