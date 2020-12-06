@@ -268,9 +268,9 @@ LSTM networks have been widely used in sequence problems where there exists a ti
 		\begin{tabular}{|l|l|}
 			\hline
 			\multicolumn{1}{|c|}{\textbf{Hyperparameter}} & \multicolumn{1}{c|}{\textbf{Options}} \\ \hline
-			Number of Hidden layers            & 0, 1, 2                            \\ \hline
-			Number of Neurons in hidden layers & 4, 6, 8                            \\ \hline
-			Activation function                & 'ReLU', 'ELU', 'Sigmoid'           \\ \hline
+			Number of Hidden layers            & 1, 2, 3, 4,                        \\ \hline
+			Number of Neurons in hidden layers & 50, 100, 150, 200, 250             \\ \hline
+			Activation function                & 'ReLU', 'ELU'			            \\ \hline
 			Dropout rate                       & 0.15, 0.18, 0.21, 0.24, 0.27, 0.30 \\ \hline
 	\end{tabular}}
 \end{table}%
@@ -464,7 +464,13 @@ After reviewing the results from the RandomSearch hyperparameter tuning process,
 
 \section{Conclusion}
 \label{sec:conclusion}
+Gamifying rehabilitation exercises can help children with CP stay engaged through many repetitive physical therapy sessions. An important step to building interactive software for physical therapy is classifying electromyography (EMG) muscle activity data efficiently and accurately. Three different gesture classification techniques were applied to an EMG dataset and compared. While the traditional approach to preprocessing for EMG classification is computationally intensive, a faster, novel approach was also tried in this report with equivalent results. 
 
+The established method of data preparation resulted in an accuracy of 99.36\% for the SVM network and 98.71\% for the FFNN. The SVM model performed best with a linear kernel or a low order polynomial kernel and regularization had minimal effect. The best hyper parameters for the FFNN model include a two layer network with an sgd learning function, a Relu activation function, and a learning rate of 0.05-0.4. 
+
+When combining the novel method of data preparation with an LSTM network, an accuracy of 99.68\% was achieved - matching the SVM network and performing better  than the FFNN. The LSTM network tuning resulted in 3-4 hidden layers with multiple 100+ neuron layers and an elu activation function. 
+
+Thus, the novel LSTM preprocessing approach can perform comparably to the other traditional approaches. These findings suggest that an application that requires real-time classification of EMG data can benefit from using the novel LSTM approach as it is computationally more efficient
 
 
 
